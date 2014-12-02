@@ -1,12 +1,12 @@
 package ConsoleController;
 
-import Model.PlayersOnlineModel;
+import Model.ModelManager;
 
 
 public class APL {
 
 	public static void main(String args[]) {
-		PlayersOnlineModel.getPlayersOnlineModel();
+		ModelManager.getModelManager().startRefreshingDataModels();
 	}
 
 }
