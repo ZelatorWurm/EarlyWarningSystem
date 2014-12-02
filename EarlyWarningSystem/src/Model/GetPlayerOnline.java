@@ -21,13 +21,12 @@ public class GetPlayerOnline extends Thread {
 			String response = "-1";
 			
 			try {
-				url = new URL("http://" + Server.getName(serverFrom)
-						+ ".wurmonline.com/mrtg/wurm.log");
+				url = new URL("http://" + Server.getName(serverFrom)+ ".wurmonline.com/mrtg/wurm.log");
+				br = new BufferedReader(new InputStreamReader(url.openStream()));
 				
-				br = new BufferedReader(new InputStreamReader(
-						url.openStream()));
-				
-				response = br.readLine().substring(14, 16);
+				response = br.readLine();
+				String[] splitted = response.split(" ");
+				response = splitted[splitted.length-1];
 			} catch (MalformedURLException e) {
 				e.printStackTrace();
 			} catch (IOException e) {
