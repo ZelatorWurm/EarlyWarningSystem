@@ -6,7 +6,7 @@ public class TimeStampPlayersOnline {
 	
 	public TimeStampPlayersOnline(int playersOnline, long epoch){
 		this.playersOnline = playersOnline;
-		this.epoch = epoch;
+		this.epoch = epoch / 1000;
 	}
 	
 	public int getPlayersOnline() {
