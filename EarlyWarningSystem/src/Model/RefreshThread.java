@@ -3,7 +3,7 @@ package Model;
 import Model.PlayersOnline.PlayersOnlineModel;
 
 public class RefreshThread extends Thread {
-	private static final int SLEEP_TIMER = 5; //IN SECONDS
+	public static final int SLEEP_TIMER = 30; //IN SECONDS
 	private static boolean continueToRefesh = true;
 	
 	@Override
@@ -12,14 +12,11 @@ public class RefreshThread extends Thread {
 			refreshAllDataModels();
 			
 			try {
-				int progresscounter = 0;
-				System.out.print("progress till refreshing: ");
+				ModelManager.getModelManager().setProgress(0);
 				do{
-					System.out.print("..." + 100/SLEEP_TIMER*progresscounter + "%");
 					sleep(1000);
-					progresscounter ++;
-				}while(progresscounter <= SLEEP_TIMER);
-				System.out.println();
+					ModelManager.getModelManager().setProgress(ModelManager.getModelManager().getProgress() + 1);
+				}while(ModelManager.getModelManager().getProgress() <= SLEEP_TIMER);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}

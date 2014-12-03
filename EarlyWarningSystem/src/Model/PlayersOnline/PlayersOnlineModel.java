@@ -60,18 +60,33 @@ public class PlayersOnlineModel extends Observable{
 	}
 	
 	public void loadPlayersOnline(){
+		playersOnlineElevation.clear();
+		playersOnlineAffliction.clear();
+		playersOnlineDesertion.clear();
+		playersOnlineSerenity.clear();
+		
 		for (Server server : Server.values()) {
 			GetPlayersOnlineThread gpo = new GetPlayersOnlineThread(server);
 			gpo.start();
 
 			try {
 				gpo.join();
-				
-				switch (server) {
-					case Elevation: playersOnlineElevation.add(gpo.getTimeStampPlayersOnline()); break;
-					case Desertion: playersOnlineDesertion.add(gpo.getTimeStampPlayersOnline()); break;
-					case Affliction: playersOnlineAffliction.add(gpo.getTimeStampPlayersOnline()); break;
-					case Serenity: playersOnlineSerenity.add(gpo.getTimeStampPlayersOnline()); break;
+				for (TimeStampPlayersOnline timeStampPlayersOnline : gpo.getListTimeStampPlayersOnline()) {
+
+					switch (server) {
+					case Elevation:
+							playersOnlineElevation.add(timeStampPlayersOnline);
+						break;
+					case Desertion:
+							playersOnlineDesertion.add(timeStampPlayersOnline);
+						break;
+					case Affliction:
+							playersOnlineAffliction.add(timeStampPlayersOnline);
+						break;
+					case Serenity:
+							playersOnlineSerenity.add(timeStampPlayersOnline);
+						break;
+					}
 				}
 			} catch (Exception e) {
 			}
@@ -79,9 +94,5 @@ public class PlayersOnlineModel extends Observable{
 		
 		setChanged();
 		notifyObservers();
-//		System.out.println("elevation: " + playersOnlineElevation.get(0).getPlayersOnline() + " at: " + playersOnlineElevation.get(0).getEpoch());
-//		System.out.println("affliction: " + playersOnlineAffliction.get(0).getPlayersOnline() + " at: " + playersOnlineAffliction.get(0).getEpoch());
-//		System.out.println("desertion: " + playersOnlineDesertion.get(0).getPlayersOnline() + " at: " + playersOnlineDesertion.get(0).getEpoch());
-//		System.out.println("serenity: " + playersOnlineSerenity.get(0).getPlayersOnline() + " at: " + playersOnlineSerenity.get(0).getEpoch());
 	}
 }
