@@ -57,22 +57,17 @@ public class MainScreen implements Observer {
 	private JFrame frmEarlyWarningSystem;
 	private JLabel lblRefreshing;
 	
+	private JPanelServer jpsElevation;
+	private JPanelServer jpsDesertion;
+	private JPanelServer jpsAffliction;
+	private JPanelServer jpsSerenity;
+	
+	//General Info
 	//Players online graph
 	private DefaultCategoryDataset playersOnlineDataSet;
 	private ChartPanel playersOnlineChartPanel;
 	
-	private XYSeriesCollection playersOnlineElevationDataSet;
-	private ChartPanel playersOnlineElevationChartPanel;
-	
-	private XYSeriesCollection playersOnlineSerenityDataSet;
-	private ChartPanel playersOnlineSerenityChartPanel;
-	
-	private XYSeriesCollection playersOnlineAfflictionDataSet;
-	private ChartPanel playersOnlineAfflictionChartPanel;
-	
-	private XYSeriesCollection playersOnlineDesertionDataSet;
-	private ChartPanel playersOnlineDesertionChartPanel;
-	
+	//temp code
 	private JTable playerKillsTable;
 	private TableModel playerKillsTableModel;
 
@@ -147,80 +142,17 @@ public class MainScreen implements Observer {
 		panel.add(scrollPane);
 		
 		//ELEVATION
-		JPanel panel_1 = new JPanel();
-		tabbedPane.addTab("Elevation", null, panel_1, null);
-		panel_1.setLayout(null);
-		
-		playersOnlineElevationDataSet = new XYSeriesCollection();
-		
-		playersOnlineElevationChartPanel = new ChartPanel(createPlayersOnlineXYChart(playersOnlineElevationDataSet));
-		playersOnlineElevationChartPanel.setLayout(null);
-		playersOnlineElevationChartPanel.setRangeZoomable(false);
-		playersOnlineElevationChartPanel.setPreferredSize(new Dimension(500, 270));
-		playersOnlineElevationChartPanel.setDomainZoomable(false);
-		playersOnlineElevationChartPanel.setBounds(10, 29, 333, 389);
-		panel_1.add(playersOnlineElevationChartPanel);
-		
-		JLabel label_1 = new JLabel("Players online");
-		label_1.setBounds(10, 11, 91, 14);
-		panel_1.add(label_1);
-		
+		jpsElevation = new JPanelServer(Server.Elevation);
+		tabbedPane.addTab("Elevation", null, jpsElevation, null);
 		//SERENITY
-		JPanel panel_2 = new JPanel();
-		tabbedPane.addTab("Serenity", null, panel_2, null);
-		panel_2.setLayout(null);
-		
-		playersOnlineSerenityDataSet = new XYSeriesCollection();
-		
-		playersOnlineSerenityChartPanel = new ChartPanel(createPlayersOnlineXYChart(playersOnlineSerenityDataSet));
-		playersOnlineSerenityChartPanel.setLayout(null);
-		playersOnlineSerenityChartPanel.setRangeZoomable(false);
-		playersOnlineSerenityChartPanel.setPreferredSize(new Dimension(500, 270));
-		playersOnlineSerenityChartPanel.setDomainZoomable(false);
-		playersOnlineSerenityChartPanel.setBounds(10, 29, 333, 389);
-		panel_2.add(playersOnlineSerenityChartPanel);
-		
-		JLabel label_2 = new JLabel("Players online");
-		label_2.setBounds(10, 11, 91, 14);
-		panel_2.add(label_2);
-		
+		jpsSerenity = new JPanelServer(Server.Serenity);
+		tabbedPane.addTab("Serenity", null, jpsSerenity, null);
 		//AFFLICTION
-		JPanel panel_3 = new JPanel();
-		tabbedPane.addTab("Affliction", null, panel_3, null);
-		panel_3.setLayout(null);
-		
-		playersOnlineAfflictionDataSet = new XYSeriesCollection();
-		
-		playersOnlineAfflictionChartPanel = new ChartPanel(createPlayersOnlineXYChart(playersOnlineAfflictionDataSet));
-		playersOnlineAfflictionChartPanel.setLayout(null);
-		playersOnlineAfflictionChartPanel.setRangeZoomable(false);
-		playersOnlineAfflictionChartPanel.setPreferredSize(new Dimension(500, 270));
-		playersOnlineAfflictionChartPanel.setDomainZoomable(false);
-		playersOnlineAfflictionChartPanel.setBounds(10, 29, 333, 389);
-		panel_3.add(playersOnlineAfflictionChartPanel);
-		
-		JLabel label_3 = new JLabel("Players online");
-		label_3.setBounds(10, 11, 91, 14);
-		panel_3.add(label_3);
-		
+		jpsAffliction = new JPanelServer(Server.Affliction);
+		tabbedPane.addTab("Affliction", null, jpsAffliction, null);
 		//DESERTION
-		JPanel panel_4 = new JPanel();
-		tabbedPane.addTab("Desertion", null, panel_4, null);
-		panel_4.setLayout(null);
-		
-		playersOnlineDesertionDataSet = new XYSeriesCollection();
-		
-		playersOnlineDesertionChartPanel = new ChartPanel(createPlayersOnlineXYChart(playersOnlineDesertionDataSet));
-		playersOnlineDesertionChartPanel.setLayout(null);
-		playersOnlineDesertionChartPanel.setRangeZoomable(false);
-		playersOnlineDesertionChartPanel.setPreferredSize(new Dimension(500, 270));
-		playersOnlineDesertionChartPanel.setDomainZoomable(false);
-		playersOnlineDesertionChartPanel.setBounds(10, 29, 333, 389);
-		panel_4.add(playersOnlineDesertionChartPanel);
-		
-		JLabel label_4 = new JLabel("Players online");
-		label_4.setBounds(10, 11, 91, 14);
-		panel_4.add(label_4);
+		jpsDesertion = new JPanelServer(Server.Desertion);
+		tabbedPane.addTab("Desertion", null, jpsDesertion, null);
 		
 		lblRefreshing = new JLabel("Refreshing..");
 		lblRefreshing.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -241,61 +173,15 @@ public class MainScreen implements Observer {
 				playersOnlineDataSet.addValue(tpo.getPlayersOnline(), "First", Server.getName(server));
 			}
 			playersOnlineChartPanel.repaint();
-	
-			//refresh players online chart elevation
-			playersOnlineElevationDataSet.removeAllSeries();
-			XYSeries series1 = new XYSeries("First");
 			
-			ArrayList<TimeStampPlayersOnline> elevationArray = PlayersOnlineModel.getPlayersOnlineModel().getPlayersOnlineElevation();
-			
-			for (int i = 0; i < elevationArray.size(); i++) {
-				series1.add(i*5, elevationArray.get(i).getPlayersOnline());
-			}
-	
-			playersOnlineElevationDataSet.addSeries(series1);
-			playersOnlineElevationChartPanel.repaint();
-			
-			// refresh players online chart serenity
-			playersOnlineSerenityDataSet.removeAllSeries();
-			XYSeries series2 = new XYSeries("First");
-	
-			ArrayList<TimeStampPlayersOnline> serenityArray = PlayersOnlineModel
-					.getPlayersOnlineModel().getPlayersOnlineSerenity();
-	
-			for (int i = 0; i < serenityArray.size(); i++) {
-				series2.add(i * 5, serenityArray.get(i).getPlayersOnline());
-			}
-	
-			playersOnlineSerenityDataSet.addSeries(series2);
-			playersOnlineSerenityChartPanel.repaint();
-	
-			// refresh players online chart affliction
-			playersOnlineAfflictionDataSet.removeAllSeries();
-			XYSeries series3 = new XYSeries("First");
-	
-			ArrayList<TimeStampPlayersOnline> afflictionArray = PlayersOnlineModel
-					.getPlayersOnlineModel().getPlayersOnlineAffliction();
-	
-			for (int i = 0; i < afflictionArray.size(); i++) {
-				series3.add(i * 5, afflictionArray.get(i).getPlayersOnline());
-			}
-	
-			playersOnlineAfflictionDataSet.addSeries(series3);
-			playersOnlineAfflictionChartPanel.repaint();
-	
-			// refresh players online chart desertion
-			playersOnlineDesertionDataSet.removeAllSeries();
-			XYSeries series4 = new XYSeries("First");
-	
-			ArrayList<TimeStampPlayersOnline> desertionArray = PlayersOnlineModel
-					.getPlayersOnlineModel().getPlayersOnlineDesertion();
-	
-			for (int i = 0; i < desertionArray.size(); i++) {
-				series4.add(i * 5, desertionArray.get(i).getPlayersOnline());
-			}
-	
-			playersOnlineDesertionDataSet.addSeries(series4);
-			playersOnlineDesertionChartPanel.repaint();
+			// refresh elevation panel
+			jpsElevation.update();	
+			// refresh serenity panel
+			jpsSerenity.update();	
+			// refresh affliction panel
+			jpsAffliction.update();
+			// refresh desertion panel
+			jpsDesertion.update();
 			
 			//refresh player kills
 			//playerKillsTableModel.setValueAt(aValue, rowIndex, columnIndex);
@@ -362,46 +248,6 @@ public class MainScreen implements Observer {
 		return chart;
 	}
 
-	private JFreeChart createPlayersOnlineXYChart(XYSeriesCollection  dataset) {
-
-		// create the chart...
-		JFreeChart chart = ChartFactory.createXYLineChart(
-				null, // chart title
-				"Minutes ago", // x axis label
-				null, // y axis label
-				dataset, // data
-				PlotOrientation.VERTICAL, false, // include legend
-				false, // tooltips
-				false // urls
-				);
-
-		// NOW DO SOME OPTIONAL CUSTOMISATION OF THE CHART...
-		chart.setBackgroundPaint(Color.white);
-
-		// final StandardLegend legend = (StandardLegend) chart.getLegend();
-		// legend.setDisplaySeriesShapes(true);
-
-		// get a reference to the plot for further customisation...
-		XYPlot plot = chart.getXYPlot();
-		plot.setBackgroundPaint(Color.lightGray);
-		// plot.setAxisOffset(new Spacer(Spacer.ABSOLUTE, 5.0, 5.0, 5.0, 5.0));
-		plot.setDomainGridlinePaint(Color.white);
-		plot.setRangeGridlinePaint(Color.white);
-
-		XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
-		renderer.setSeriesLinesVisible(0, true);
-		renderer.setSeriesShapesVisible(1, false);
-		plot.setRenderer(renderer);
-
-		// change the auto tick unit selection to integer units only...
-		NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();
-		rangeAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
-		// OPTIONAL CUSTOMISATION COMPLETED.
-
-		return chart;
-
-	}
-	
 	class CustomRenderer extends BarRenderer {
 
         private Paint[] colors;
