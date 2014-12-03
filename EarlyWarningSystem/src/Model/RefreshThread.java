@@ -1,5 +1,6 @@
 package Model;
 
+import Model.PlayerNamesOnline.PlayerNamesOnlineModel;
 import Model.PlayersOnline.PlayersOnlineModel;
 
 public class RefreshThread extends Thread {
@@ -25,6 +26,7 @@ public class RefreshThread extends Thread {
 
 	private void refreshAllDataModels() {
 		PlayersOnlineModel.getPlayersOnlineModel().loadPlayersOnline();
+		PlayerNamesOnlineModel.getPlayerNamesOnlineModel().loadPlayerNamesOnline();
 	}
 	
 	public void stopRefreshing(){

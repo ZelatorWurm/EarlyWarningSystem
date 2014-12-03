@@ -66,10 +66,6 @@ public class MainScreen implements Observer {
 	//Players online graph
 	private DefaultCategoryDataset playersOnlineDataSet;
 	private ChartPanel playersOnlineChartPanel;
-	
-	//temp code
-	private JTable playerKillsTable;
-	private TableModel playerKillsTableModel;
 
 	/**
 	 * Launch the application.
@@ -129,18 +125,6 @@ public class MainScreen implements Observer {
 		lblT.setBounds(10, 11, 91, 14);
 		panel.add(lblT);
 		
-		JLabel label = new JLabel("Table example");
-		label.setBounds(371, 11, 119, 14);
-		panel.add(label);
-		
-		playerKillsTableModel = new DefaultTableModel();
-		playerKillsTable = createLatestPlayerKillsTable();
-		
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(371, 29, 450, 270);
-		scrollPane.setViewportView(playerKillsTable);
-		panel.add(scrollPane);
-		
 		//ELEVATION
 		jpsElevation = new JPanelServer(Server.Elevation);
 		tabbedPane.addTab("Elevation", null, jpsElevation, null);
@@ -186,18 +170,6 @@ public class MainScreen implements Observer {
 			//refresh player kills
 			//playerKillsTableModel.setValueAt(aValue, rowIndex, columnIndex);
 		}
-	}
-	
-	private JTable createLatestPlayerKillsTable(){
-		String[] columnNames = { "Slayer", "Killed", "Date","Server"};
-		String[][] data = new String[0][0];
-		
-		JTable table = new JTable(data, columnNames);
-		table.setPreferredScrollableViewportSize(new Dimension(500, 70));
-		table.setFillsViewportHeight(true);
-		table.setModel(playerKillsTableModel);
-		
-		return table;
 	}
 	
 	private JFreeChart createTotalPlayersChart(){

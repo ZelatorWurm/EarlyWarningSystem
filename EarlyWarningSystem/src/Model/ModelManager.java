@@ -3,6 +3,7 @@ package Model;
 import java.util.Observable;
 import java.util.Observer;
 
+import Model.PlayerNamesOnline.PlayerNamesOnlineModel;
 import Model.PlayersOnline.PlayersOnlineModel;
 
 public class ModelManager extends Observable implements Observer{
@@ -20,6 +21,7 @@ public class ModelManager extends Observable implements Observer{
 
 	private ModelManager() {
 		PlayersOnlineModel.getPlayersOnlineModel().addObserver(this);
+		PlayerNamesOnlineModel.getPlayerNamesOnlineModel().addObserver(this);
 		refreshThread = new RefreshThread();
 	}
 	
